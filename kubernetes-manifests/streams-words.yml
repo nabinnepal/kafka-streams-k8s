@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streams-words
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streams-words
+  template:
+    metadata:
+      labels:
+        app: streams-words
+    spec:
+      containers:
+        - name: streams-words
+          image: practice/streams-words
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: "KAFKA_BOOTSTRAP_SERVERS"
+              value: "word-kafka-bootstrap:9092"
+            - name: "KAFKA_APPLICATION_SERVER_HOST"
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: streams-words
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+  selector:
+    app: streams-words
+  type: ClusterIP

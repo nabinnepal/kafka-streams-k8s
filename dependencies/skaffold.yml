@@ -1,0 +1,7 @@
+apiVersion: skaffold/v2alpha4
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./kafka/kafka.yml
+      - ./kafka/kafka-topics.yml

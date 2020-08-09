@@ -1,0 +1,15 @@
+apiVersion: skaffold/v2alpha4
+kind: Config
+build:
+  local:
+    concurrency: 4
+    useBuildkit: false
+    useDockerCLI: false
+  artifacts:
+    - image: practice/streams-words
+      context: ./apps/streams-words
+      jib: {}
+deploy:
+  kubectl:
+    manifests:
+      - ./kubernetes-manifests/streams-words.yml

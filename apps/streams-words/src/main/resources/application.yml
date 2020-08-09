@@ -1,0 +1,6 @@
+kafka:
+  input-topic: words
+  client-id: word-count-analyzer
+  bootstrap-servers: localhost:9093
+  application-server-host: localhost
+  application-server-port: 8080
