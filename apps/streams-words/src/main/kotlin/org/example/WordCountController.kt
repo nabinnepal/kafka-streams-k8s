@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/state")
@@ -14,10 +16,8 @@ class WordCountController(
     @GetMapping("/count/{word}")
     fun getWordCountFromStore(
         @PathVariable("word") word: String
-    ): ResponseEntity<Pair<String, Long>> {
-        return wordCountService.getCountFromStore(word)?.let {
-                result -> ResponseEntity.ok(result)
-        } ?: ResponseEntity.notFound().build()
+    ): Mono<WordCounter> {
+        return wordCountService.getCountFromStore(word)
     }
 
     @GetMapping("/count/{word}/{from}/{to}")
@@ -25,9 +25,7 @@ class WordCountController(
         @PathVariable("word") word: String,
         @PathVariable("from") from: Long,
         @PathVariable("to") to: Long
-    ): ResponseEntity<List<Pair<String, Long>>> {
-        return wordCountService.getCountFromWindowStore(word, from, to).let {
-                result -> ResponseEntity.ok(result)
-        }
+    ): Flux<WordCounter> {
+        return wordCountService.getCountFromWindowStore(word, from, to)
     }
 }
