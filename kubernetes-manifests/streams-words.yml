@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: streams-words
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: streams-words
@@ -37,4 +37,4 @@ spec:
       targetPort: http
   selector:
     app: streams-words
-  type: ClusterIP
+  type: NodePort
